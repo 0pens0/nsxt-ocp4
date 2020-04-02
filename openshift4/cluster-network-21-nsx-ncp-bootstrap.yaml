@@ -13,14 +13,14 @@ spec:
     spec:
       containers:
       - command: [/bin/bash, -c, while true; do sleep 5; done]
-        image: registry.local/3.0.0.33783029/nsx-ncp-rhel
+        image: registry.local/3.0.0.34331552/nsx-ncp-rhel:latest
         imagePullPolicy: IfNotPresent
         name: nsx-dummy
       hostNetwork: true
       hostPID: true
       initContainers:
       - command: [init_k8s_node]
-        image: registry.local/3.0.0.33783029/nsx-ncp-rhel
+        image: registry.local/3.0.0.34331552/nsx-ncp-rhel:latest
         imagePullPolicy: IfNotPresent
         name: nsx-ncp-bootstrap
         securityContext:

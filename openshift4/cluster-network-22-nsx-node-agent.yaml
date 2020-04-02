@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - command: [start_node_agent]
-        image: registry.local/3.0.0.33783029/nsx-ncp-rhel
+        image: registry.local/3.0.0.34331552/nsx-ncp-rhel:latest
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
@@ -33,7 +33,7 @@ spec:
         - {mountPath: /var/run/netns, name: netns}
         - {mountPath: /host/proc, name: proc, readOnly: true}
       - command: [start_kube_proxy]
-        image: registry.local/3.0.0.33783029/nsx-ncp-rhel
+        image: registry.local/3.0.0.34331552/nsx-ncp-rhel:latest
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
@@ -48,7 +48,7 @@ spec:
         - {mountPath: /etc/nsx-ujo, name: projected-volume, readOnly: true}
         - {mountPath: /var/run/openvswitch, name: openvswitch}
       - command: [start_ovs]
-        image: registry.local/3.0.0.33783029/nsx-ncp-rhel
+        image: registry.local/3.0.0.34331552/nsx-ncp-rhel:latest
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
@@ -59,6 +59,7 @@ spec:
         securityContext:
           capabilities:
             add: [NET_ADMIN, SYS_ADMIN, SYS_NICE, SYS_MODULE]
+        terminationGracePeriodSeconds: 60
         volumeMounts:
         - {mountPath: /etc/nsx-ujo, name: projected-volume, readOnly: true}
         - {mountPath: /etc/openvswitch, name: var-run-ujo, subPath: openvswitch-db}
@@ -84,6 +85,10 @@ spec:
               items:
               - {key: ncp.ini, path: ncp.ini}
               name: nsx-node-agent-config
+          - configMap:
+              items:
+              - {key: version, path: VERSION}
+              name: nsx-ncp-version-config
       - hostPath: {path: /var/run/openvswitch}
         name: openvswitch
       - hostPath: {path: /var/run/nsx-ujo}
